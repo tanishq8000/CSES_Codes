@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define int long long
+
+void dfs(int r,int c,int n,int m,vector<vector<char>> &arr,vector<vector<bool>> &vis){
+    int dx[4] = {-1,0,1,0};
+    int dy[4] = {0,-1,0,1};
+    
+    vis[r][c] = true;
+    
+    for(int i=0;i<4;i++){
+        int nr = r + dx[i];
+        int nc = c + dy[i];
+        
+        if(nr>=0 && nr<n && nc>=0 && nc<m && !vis[nr][nc] && arr[nr][nc] == '.'){
+            dfs(nr,nc,n,m,arr,vis);
+        }
+    }
+}
+
+int32_t main() {
+    int n,m;
+    cin>>n>>m;
+    vector<vector<char>> arr(n,vector<char>(m));
+    
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            cin>>arr[i][j];
+        }
+    }
+    
+    int ans = 0;
+    vector<vector<bool>> vis(n,vector<bool>(m,false));
+    for(int i=0;i<n;i++){
+        for(int j=0;j<m;j++){
+            if(!vis[i][j] && arr[i][j] == '.'){
+                ans++;
+                dfs(i,j,n,m,arr,vis);
+            }
+        }
+    }
+    
+    cout<<ans<<endl;
+    return 0;
+}
