@@ -1,0 +1,75 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int32_t main() {
+    int n, m;
+    cin >> n >> m;
+
+    int sr = -1, sc = -1, er = -1, ec = -1;
+    vector<vector<char>> arr(n, vector<char>(m));
+
+    vector<vector<bool>> vis(n, vector<bool>(m, false));
+    vector<vector<pair<int, int>>> pre(n, vector<pair<int, int>>(m, {-1, -1}));
+
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < m; j++) {
+            cin >> arr[i][j];
+            if (arr[i][j] == 'A') {
+                sr = i;
+                sc = j;
+            } else if (arr[i][j] == 'B') {
+                er = i;
+                ec = j;
+            }
+        }
+    }
+
+    vector<char> dir = {'L', 'U', 'R', 'D'};
+    int dx[4] = {0, -1, 0, 1};
+    int dy[4] = {-1, 0, 1, 0};
+
+    queue<pair<int, int>> q;
+    q.push({sr, sc});
+    vis[sr][sc] = true;
+
+    while (!q.empty()) {
+        int r = q.front().first;
+        int c = q.front().second;
+        q.pop();
+
+        for (int i = 0; i < 4; i++) {
+            int nr = r + dx[i];
+            int nc = c + dy[i];
+
+            if (nr >= 0 && nr < n && nc >= 0 && nc < m &&
+                !vis[nr][nc] && (arr[nr][nc] == '.' || arr[nr][nc] == 'B')) {
+                q.push({nr, nc});
+                vis[nr][nc] = true;
+                pre[nr][nc] = {r, c};
+
+                if (nr == er && nc == ec) {
+                    string ans = "";
+                    while (make_pair(nr, nc) != make_pair(sr, sc)) {
+                        pair<int, int> p = pre[nr][nc];
+                        for (int d = 0; d < 4; d++) {
+                            if (p.first + dx[d] == nr && p.second + dy[d] == nc) {
+                                ans += dir[d];
+                                break;
+                            }
+                        }
+                        nr = p.first;
+                        nc = p.second;
+                    }
+                    reverse(ans.begin(), ans.end());
+                    cout << "YES" << endl;
+                    cout << ans.length() << endl;
+                    cout << ans << endl;
+                    return 0;
+                }
+            }
+        }
+    }
+
+    cout << "NO" << endl;
+    return 0;
+}
