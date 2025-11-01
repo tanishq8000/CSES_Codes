@@ -1,0 +1,35 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int mod = 1e9+7;
+
+long long helper(int tar,vector<long long> &dp){
+    if(tar == 0){
+        return 1;
+    }
+    
+    if(dp[tar] != -1){
+        return dp[tar];
+    }
+    
+    long long cnt = 0;
+    
+    for(int i=1;i<=6;i++){
+        if(tar-i >= 0){
+            cnt = (cnt + helper(tar-i,dp)) % mod;
+        }
+        else{
+            break;
+        }
+    }
+    
+    return dp[tar] = cnt;
+}
+
+int main() {
+    int n;
+    cin>>n;
+    vector<long long> dp(n+1,-1);
+    cout<<helper(n,dp)%mod<<endl;
+    return 0;
+}
