@@ -1,0 +1,32 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+const int MOD = 1e9 + 7;
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    int n, am;
+    cin >> n >> am;
+    
+    vector<int> c(n);
+    for (int i = 0; i < n; i++) {
+        cin >> c[i];
+    }
+    
+    vector<long long> dp(am + 1, 0);
+    dp[0] = 1;
+    
+    for (int i = 1; i <= am; i++) {
+        long long cnt = 0;
+        for (auto x : c) {
+            if (i >= x) {
+                cnt = (cnt + dp[i - x]) % MOD;
+            }
+        }
+        dp[i] = cnt;
+    }
+    cout << dp[am] << endl;
+    return 0;
+}
